@@ -5,41 +5,46 @@
 
 ## 🧩 Abstract
 
-In today’s used vehicle market, finding the right car that fits a user’s preferences—brand, model, fuel type, or budget—is a challenging task.  
-This project presents a **content-based car recommendation system** that helps users discover cars similar to their selected car or query input using **unsupervised machine learning**.  
+In today’s pre-owned vehicle market, finding the right car that fits user preferences—brand, model, fuel type, mileage, and budget—is a challenging task.  
+This project, **CarMate**, is a **content-based car recommendation system** that helps users explore cars similar to a selected model using **machine learning techniques**.  
 
-The dataset used in this project is derived from the **[Quickr Cars Dataset](https://www.kaggle.com/datasets/vedantkhapekar/quickr-cars-dataset)** available on Kaggle, which contains detailed listings of used cars sold across India.  
-After cleaning and preprocessing, the data was used to build and deploy a **Car Recommendation Engine** powered by **k-Nearest Neighbors (k-NN)** and **Cosine Similarity**.  
+The system uses the **[Quickr Cars Dataset](https://www.kaggle.com/datasets/vedantkhapekar/quickr-cars-dataset)** as its base dataset and applies data cleaning, preprocessing, and vectorization to build a robust recommendation engine.  
+It combines **TF-IDF (Term Frequency–Inverse Document Frequency)** for text data and **k-Nearest Neighbors (k-NN)** for similarity matching.  
 
-The final product is an interactive **Streamlit web application** that enables users to filter, search, and find the most similar cars within their criteria.  
-This project demonstrates the application of machine learning in **personalized recommendations** and the **used automobile marketplace**.
+The final product is an interactive **Streamlit web application** that enables users to:
+- Choose a car brand and model,
+- Set filters (year, fuel type, mileage, and price),
+- And instantly get recommendations for similar cars.  
+
+This project demonstrates the integration of **machine learning, data preprocessing, and web deployment** to solve a real-world problem in the used automobile industry.
 
 ---
 
 ## 🎯 Objectives
 
 - Build a **content-based recommendation system** for used cars.  
-- Allow users to find cars similar to a specific model or keyword query.  
-- Apply **TF-IDF Vectorization** and **k-Nearest Neighbors** for similarity measurement.  
-- Develop an interactive, user-friendly interface using **Streamlit**.  
-- Provide users with practical insights and an intuitive exploration experience.
+- Allow users to search for cars similar to a specific model or query.  
+- Apply **TF-IDF vectorization** on textual data and **k-NN** for similarity detection.  
+- Develop an **interactive, user-friendly interface** with Streamlit.  
+- Integrate **filter-based constraints** (price, fuel, year, mileage) dynamically.  
+- Demonstrate practical application of ML for **personalized recommendations**.  
 
 ---
 
 ## 🧠 Dataset
 
-**Source:** [Quickr Cars Dataset on Kaggle](https://www.kaggle.com/datasets/vedantkhapekar/quickr-cars-dataset)  
-**Cleaned Version Used:** [`Cleaned_Car_data.csv`](https://github.com/rajtilakls2510/car_price_predictor/blob/master/Cleaned_Car_data.csv)
+**Source:** [Quickr Cars Dataset – Kaggle](https://www.kaggle.com/datasets/vedantkhapekar/quickr-cars-dataset)  
 
 **Key Columns:**
+
 | Column | Description |
 |--------|--------------|
 | `name` | Car model name |
 | `company` | Manufacturer (e.g., Maruti, Hyundai, Ford) |
-| `year` | Year of manufacture |
-| `Price` | Selling price (for display, not prediction) |
+| `year` | Manufacturing year |
+| `Price` | Selling price (used for filtering, not prediction) |
 | `kms_driven` | Total kilometers driven |
-| `fuel_type` | Type of fuel (Petrol/Diesel/CNG) |
+| `fuel_type` | Fuel type (Petrol/Diesel/CNG/etc.) |
 
 ---
 
@@ -48,66 +53,85 @@ This project demonstrates the application of machine learning in **personalized 
 ### 🔹 1. Recommendation Engine
 - **Algorithm:** k-Nearest Neighbors (k-NN)  
 - **Similarity Metric:** Cosine Similarity  
-- **Goal:** Recommend similar cars based on a selected car or user query.  
-- **Approach:**  
-  - Combine text features (`name`, `company`, `fuel_type`) using **TF-IDF vectorization**.  
-  - Normalize numerical features (`year`, `kms_driven`) using **StandardScaler**.  
-  - Merge text and numeric vectors into a hybrid feature space.  
-  - Use **NearestNeighbors(metric='cosine')** to find the top *k* most similar cars.
+- **Text Processing:** TF-IDF vectorization of `name`, `company`, and `fuel_type`.  
+- **Numeric Features:** `year` and `kms_driven` scaled using `StandardScaler`.  
+- **Goal:** Recommend the *Top-K* most similar cars to a selected model or query.  
 
-### 🔹 2. Streamlit Web App
-- Simple and responsive user interface.  
-- Two main modes:
-  1. **Find Similar Cars:** Select a car from the list to get top similar ones.  
-  2. **Search by Text Query:** Enter a phrase like “Diesel SUV Honda” to discover matching cars.  
-- Interactive sidebar filters for:
-  - Price range  
-  - Company  
-  - Fuel type  
-  - Year range  
-  - Max kilometers driven  
+### 🔹 2. Streamlit Web Application
+- Interactive web app with no sidebar clutter.  
+- Flow:
+  1. **Select Brand → Model** (filtered dynamically).  
+  2. Choose **Fuel Type** and number of results.  
+  3. Set **Price range**, **Year range**, and **Max mileage (kms)**.  
+  4. Click **Find Recommendations** to view top results.  
+- The app automatically:
+  - Adapts slider bounds to brand/model selection.  
+  - Handles missing or single-value data gracefully.  
+  - Soft-relaxes overly strict filters to ensure valid results.  
 
 ---
 
 ## 🧰 Tech Stack
 
-| Layer | Tools / Libraries |
-|--------|-------------------|
-| Frontend | Streamlit |
-| Backend | Python |
-| Machine Learning | scikit-learn |
-| Data Handling | Pandas, NumPy |
-| Feature Engineering | TF-IDF Vectorizer, StandardScaler |
-| Similarity Metric | Cosine Similarity |
-| Dataset | Quickr Cars Dataset (Kaggle) |
+| Component | Tools / Libraries |
+|------------|-------------------|
+| **Frontend** | Streamlit |
+| **Backend / ML** | Python, scikit-learn |
+| **Data Handling** | Pandas, NumPy |
+| **Feature Engineering** | TF-IDF Vectorizer, StandardScaler |
+| **Model** | k-Nearest Neighbors (cosine similarity) |
+| **Deployment** | Streamlit App |
 
 ---
 
 ## 📊 Methodology
 
-1. **Data Cleaning & Preprocessing**  
-   - Removed missing or inconsistent entries.  
-   - Converted text fields to lowercase and stripped whitespace.  
-   - Combined multiple text columns into a single searchable string.  
+1. **Data Cleaning & Preprocessing**
+   - Removed missing, duplicated, or inconsistent rows.
+   - Normalized text columns (lowercase, stripped whitespace).
+   - Converted numerical columns (`Price`, `kms_driven`, `year`) to proper numeric types.
 
-2. **Feature Engineering**  
-   - Applied TF-IDF on text columns (`name`, `company`, `fuel_type`).  
-   - Scaled numerical columns (`year`, `kms_driven`) using StandardScaler.  
-   - Merged text and numeric vectors for each car record.  
+2. **Feature Engineering**
+   - Combined textual columns into a single string for vectorization.
+   - Used TF-IDF to transform text data into numerical feature vectors.
+   - Scaled numeric features for equal contribution to similarity computation.
 
-3. **Model Development**  
-   - Used k-Nearest Neighbors with cosine distance for similarity measurement.  
-   - Built two recommendation modes: *based on car selection* and *based on user text query*.  
+3. **Model Development**
+   - Built a **k-NN model** using cosine similarity.
+   - Precomputed vectors for all cars in the dataset.
+   - Queried the model for the most similar cars given user inputs.
 
-4. **Deployment**  
-   - Developed an interactive interface with Streamlit.  
-   - Integrated filters for flexible user exploration.  
+4. **Web Integration**
+   - Implemented an interactive Streamlit UI:
+     - Dynamic sliders adjust based on selected brand/model data.
+     - Auto-handles one-value columns (like a single price/year entry).
+   - Provided clear user messages for missing or relaxed filters.
+
+---
+
+## 🧮 Inputs & Outputs
+
+### **Inputs**
+- Brand  
+- Model (filtered by brand)  
+- Fuel type  
+- Price range  
+- Year range  
+- Max mileage (kms)  
+- Number of recommendations  
+
+### **Outputs**
+A ranked table of **Top-K recommended cars**, including:
+| Score | Name | Company | Fuel | Year | Kms Driven | Price |
+|--------|------|----------|------|------|-------------|--------|
+
+Scores represent similarity (1 = most similar).
 
 ---
 
 ## 🚀 How to Run the Project
 
-..........
-..........
-..........
-
+### **1️⃣ Clone the Repository**
+```bash
+git clone https://github.com/<your-username>/carmate.git
+cd carmate
